@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { db } from "../firebase/firebase.js";
 import bcrypt from 'bcrypt';
 import { validateRut } from '@fdograph/rut-utilities';
-
+import jwt from 'jsonwebtoken';
 
 //valida la entrada del usuario y maneja la creción de un nuevo usuario
 //también la encriptación con bcrypt
@@ -87,38 +87,34 @@ const insertUser = async ({ fullname, email, rut }) => {
 
 //autenticar a los usuarios, verificando sus credenciales y comparando la contraseña
 const authUser = async (req, res) => {
-    try {
-      const { email, password } = req.body
+  try {
+      const { email, password } = req.body;
       if (!email || !password) {
-        res.status(400)
-        res.send({message: "Faltan credenciales"})
-        return
+          return res.status(400).send({ message: "Faltan credenciales" });
       }
-      const userCollection = db.collection("user")
-      const userQuery = await userCollection.where("email", "==", email).get()
+      const userCollection = db.collection("user");
+      const userQuery = await userCollection.where("email", "==", email).get();
       if (userQuery.empty) {
-        res.status(400)
-        res.send({message: "Credenciales inválidas"})
-        return
+          return res.status(400).send({ message: "Credenciales inválidas" });
       }
-      const userDoc = userQuery.docs[0]
-      const user = userDoc.data()
-      const passwordHash = user.password
-      const passwordMatch = await bcrypt.compare(password, passwordHash)
-      if (!passwordMatch) {
-        res.status(400)
-        res.send({message: "Credenciales inválidas"})
-        return
+      const userDoc = userQuery.docs[0];
+      const user = userDoc.data();
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (passwordMatch) {
+          const token = jwt.sign(
+              { email: user.email },
+              process.env.JWT_SECRET,
+              { expiresIn: '1h' }
+          );
+          return res.status(200).send({ token });
+      } else {
+          return res.status(401).send({ message: "Credenciales inválidas" });
       }
-      delete user.password
-      res.status(200)
-      res.send({user: user})
-    //   return { id: userDoc.id, ...user }
-    
-    } catch (error) {
-      console.error("Error al autenticar el usuario:", error)
-      throw error
-    }
-}
+  } catch (error) {
+      console.error("Error al autenticar el usuario:", error);
+      return res.status(500).send({ message: "Error interno del servidor" });
+  }
+};
+
 
 export { addUser, authUser }

@@ -4,6 +4,7 @@ import { db } from "../firebase/firebase.js";
 import bcrypt from 'bcrypt';
 import { validateRut } from '@fdograph/rut-utilities';
 import jwt from 'jsonwebtoken';
+import { validateEditUser } from "../models/edituser_model.js";
 
 //valida la entrada del usuario y maneja la creción de un nuevo usuario
 //también la encriptación con bcrypt
@@ -56,6 +57,7 @@ const addUser = async (req, res) => {
 
 }
 
+//registra un usuario en la base de datos
 const insertUser = async ({ fullname, email, rut }) => {
   try {
     const userCollection = db.collection("user");
@@ -106,6 +108,7 @@ const authUser = async (req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: '1h' }
           );
+          console.log(token);
           return res.status(200).send({ token });
       } else {
           return res.status(401).send({ message: "Credenciales inválidas" });
@@ -116,5 +119,75 @@ const authUser = async (req, res) => {
   }
 };
 
+//actualizar datos del perfil
+const updateUserProfile = async (req, res) => {
+  const userEmail = req.email; 
 
-export { addUser, authUser }
+  try {
+    const { fullname, email, birthYear } = req.body;
+    console.log(req.body)
+
+    // Validar datos del usuario con la misma lógica de registro
+    const validationResult = validateEditUser({ fullname, email, birthYear });
+    if (!validationResult.success) {
+        return res.status(400).json({ errors: validationResult.error });
+    }
+    
+
+    // Encuentra el documento del usuario por su correo electrónico
+    const userQuerySnapshot = await db.collection("user").where("email", "==", userEmail).get();
+    if (userQuerySnapshot.empty) {
+        return res.status(404).json({ message: 'Usuario no encontrado.' });
+    }
+
+    // Obtiene el documento y actualiza la información
+    const userDocRef = userQuerySnapshot.docs[0].ref;
+    await userDocRef.update({ fullname, email: email || userEmail, birthYear });
+    
+    const updatedUserQuerySnapshot = (await userDocRef.get()).data();
+    delete updatedUserQuerySnapshot.password;
+    const user = {
+      id: userDocRef.id,
+      ...updatedUserQuerySnapshot,
+    }
+
+    res.json({ user });
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Error al actualizar el perfil' });
+  }
+};
+
+//actualizar contraseña 
+const updatePassword = async (req, res) => {
+  const userEmail = req.email;
+  const { newPassword } = req.body;
+
+  // Valida que la contraseña tenga al menos 5 caracteres y al menos 1 número
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+  if (!passwordRegex.test(newPassword)) {
+    return res.status(400).json({ message: 'La contraseña debe tener al menos 5 caracteres y al menos 1 número.' });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    const userQuerySnapshot = await db.collection("user").where("email", "==", userEmail).get();
+
+    if (!userQuerySnapshot.empty) {
+      const userDocRef = userQuerySnapshot.docs[0].ref;
+      await userDocRef.update({ password: hashedPassword });
+      res.json({ message: 'Contraseña actualizada correctamente' });
+    } else {
+      res.status(404).json({ message: 'Usuario no encontrado.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar la contraseña' });
+  }
+};
+
+
+
+
+
+export { addUser, authUser, updateUserProfile, updatePassword}

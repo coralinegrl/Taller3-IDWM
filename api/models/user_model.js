@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+const currentYear = new Date().getFullYear();
+
+
 const userModel = z.object({
     fullname: z.string().min(10, {
         message: 'El nombre del usuario debe tener al menos 10 caracteres'

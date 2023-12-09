@@ -4,6 +4,9 @@ import { db } from "../firebase/firebase.js";
 import bcrypt from 'bcrypt';
 import { validateRut } from '@fdograph/rut-utilities';
 
+
+//valida la entrada del usuario y maneja la creción de un nuevo usuario
+//también la encriptación con bcrypt
 const addUser = async (req, res) => {
     try {
         const result = validateUser(req.body)
@@ -54,30 +57,35 @@ const addUser = async (req, res) => {
 }
 
 const insertUser = async ({ fullname, email, rut }) => {
-    try {
-      const userCollection = db.collection("user")
-      const saltRounds = 10
-      // falta quitarle puntos y guion al rut para password
-      const hashedPassword = await bcrypt.hash(rut, saltRounds)
-  
-      const newUser = {
-        fullname,
-        email,
-        rut,
-        password: hashedPassword,
-      };
-  
-      const userDocRef = await userCollection.add(newUser)
-      const user = { id: userDocRef.id, ...newUser }
-      delete user.password;
-      console.log("Usuario agregado con ID: ", userDocRef.id)
-      return user
-    } catch (error) {
-      console.error("Error al agregar el usuario a la base de datos:", error)
-      throw error
-    }
+  try {
+    const userCollection = db.collection("user");
+    const saltRounds = 10;
+
+    // Eliminar puntos y guión del RUT para la contraseña
+    const cleanRut = rut.replace(/[\.\-]/g, '');
+    const hashedPassword = await bcrypt.hash(cleanRut, saltRounds);
+
+    const newUser = {
+      fullname,
+      email,
+      rut,
+      password: hashedPassword,
+    };
+
+    const userDocRef = await userCollection.add(newUser);
+    const user = { id: userDocRef.id, ...newUser };
+    delete user.password;
+    console.log("Usuario agregado con ID: ", userDocRef.id);
+    return user;
+  } catch (error) {
+    console.error("Error al agregar el usuario a la base de datos:", error);
+    throw error;
+  }
 };
 
+
+
+//autenticar a los usuarios, verificando sus credenciales y comparando la contraseña
 const authUser = async (req, res) => {
     try {
       const { email, password } = req.body

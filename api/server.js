@@ -10,8 +10,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use("/api/user", UserRoute )
-app.use('/api/user', verifyToken)
-
+app.use("/api/user", verifyToken)
 
 const port = process.env.PORT || 3001
 

@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
 
     if(bearerToken == "") {
         res.status(401)
-        res.send({message: "Token not found"})
+        res.send({message: "Token no encontrado"})
         return
     }
     const token = bearerToken.split(" ")[1]
@@ -16,8 +16,9 @@ const verifyToken = (req, res, next) => {
         }
 
         req.email = decoded.email;
-        next();
+        
         console.log("Token verificado correctamente");
+        next();
     });
 };
 

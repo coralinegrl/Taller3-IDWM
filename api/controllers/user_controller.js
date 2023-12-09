@@ -160,14 +160,20 @@ const updateUserProfile = async (req, res) => {
 };
 
 //actualizar contraseña 
-const updatePassword = async (req, res) => {
+const saltRounds = 10;
+const updateUserPassword = async (req, res) => {
   const userEmail = req.email;
-  const { newPassword } = req.body;
+  const { newPassword, confirmPassword } = req.body;
 
   // Valida que la contraseña tenga al menos 5 caracteres y al menos 1 número
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
   if (!passwordRegex.test(newPassword)) {
     return res.status(400).json({ message: 'La contraseña debe tener al menos 5 caracteres y al menos 1 número.' });
+  }
+
+  // Verifica que la nueva contraseña y la confirmación coincidan
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: 'La nueva contraseña y la confirmación de contraseña no coinciden.' });
   }
 
   try {
@@ -182,6 +188,7 @@ const updatePassword = async (req, res) => {
       res.status(404).json({ message: 'Usuario no encontrado.' });
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'Error al actualizar la contraseña' });
   }
 };
@@ -190,4 +197,5 @@ const updatePassword = async (req, res) => {
 
 
 
-export { addUser, authUser, updateUserProfile, updatePassword}
+
+export { addUser, authUser, updateUserProfile, updateUserPassword}

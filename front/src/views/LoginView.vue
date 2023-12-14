@@ -24,14 +24,15 @@
         </form>
       </ion-content>
     </ion-page>
-</template>
+  </template>
   
-<script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonItem, IonLabel } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
-import axios from 'axios';
+  <script>
+  import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonItem, IonLabel } from '@ionic/vue';
+  import { defineComponent, ref } from 'vue';
+  import axios from 'axios';
+  import router from '../router'; // Importa el enrutador de Vue Router
   
-export default defineComponent({
+  export default defineComponent({
     name: 'LoginView',
     components: {
       IonContent,
@@ -56,12 +57,12 @@ export default defineComponent({
           });
   
           // Si la autenticación es exitosa, puedes guardar el token en el almacenamiento local o en una cookie
-          // También puedes redirigir al usuario a otra página
+          // También puedes redirigir al usuario a la página deseada (RepositoriesView en este caso)
           const token = response.data.token;
           console.log('Token:', token);
-          
-          // Redirige al usuario a la página deseada
-          // router.push('/dashboard');
+  
+          // Redirige al usuario a la página de RepositoriesView después del inicio de sesión exitoso
+          router.push('/repositories');
         } catch (error) {
           console.error('Error al iniciar sesión:', error);
           // Maneja el error, muestra un mensaje al usuario, etc.
@@ -74,10 +75,10 @@ export default defineComponent({
         login,
       };
     },
-});
-</script>
+  });
+  </script>
   
-<style scoped>
-  /* Estilos específicos para la vista de inicio de sesión */
-</style>
+  <style scoped>
+    /* Estilos específicos para la vista de inicio de sesión */
+  </style>
   

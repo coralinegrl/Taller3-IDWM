@@ -24,15 +24,15 @@
         </form>
       </ion-content>
     </ion-page>
-  </template>
+</template>
   
-  <script>
-  import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonItem, IonLabel } from '@ionic/vue';
-  import { defineComponent, ref } from 'vue';
-  import axios from 'axios';
-  import router from '../router'; // Importa el enrutador de Vue Router
+<script>
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonItem, IonLabel } from '@ionic/vue';
+import { defineComponent, ref } from 'vue';
+import axios from 'axios';
+import router from '../router'; // Importa el enrutador de Vue Router
   
-  export default defineComponent({
+export default defineComponent({
     name: 'LoginView',
     components: {
       IonContent,
@@ -75,10 +75,10 @@
         login,
       };
     },
-  });
-  </script>
+});
+</script>
   
-  <style scoped>
+<style scoped>
     /* Estilos específicos para la vista de inicio de sesión */
-  </style>
+</style>
   

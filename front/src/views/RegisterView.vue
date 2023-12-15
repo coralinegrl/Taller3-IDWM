@@ -63,7 +63,7 @@ export default defineComponent({
   
       const register = async () => {
         try {
-          const response = await axios.post('/api/register', {
+          const response = await axios.post('/api/', {
             fullname: fullname.value,
             email: email.value,
             birthYear: birthYear.value,

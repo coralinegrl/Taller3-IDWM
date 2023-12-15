@@ -1,43 +1,29 @@
-import { Octokit } from '@octokit/core';
+import { Octokit } from '@octokit/rest';
+const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
-
-const { Octokit } = require('octokit');
-
-// Crea una instancia de Octokit con tu token de GitHub
-const octokit = new Octokit({
-  auth: 'GITHUB_ACCESS_TOKEN'
-});
-
-// Función para obtener la lista de repositorios de Dizkm8
-async function getDizkm8Repositories() {
-    try {
-      // Realiza la solicitud a la API de GitHub para obtener todos los repositorios de Dizkm8
-      const response = await octokit.request('GET /users/Dizkm8/repos');
-  
-      // Procesa y devuelve la lista de repositorios
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-}
-
-// Función para obtener los commits de un repositorio
-async function getCommits(owner, repo) {
-  try {
-    // Realiza la solicitud a la API de GitHub para obtener los commits
-    const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
-      owner,
-      repo,
+const getUserRepos = (req, res) => {
+    octokit.repos.listForUser({
+        username: req.params.username
+    }).then(response => {
+        res.send(response.data);
+    }).catch(error => {
+        console.error(error);
+        res.status(500).send('Error al obtener los repositorios');
     });
-
-    // Procesa y devuelve la lista de commits
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
-module.exports = {
-  getDizkm8Repositories,
-  getCommits,
 };
+
+const getRepoCommits = (req, res) => {
+    const { username, repo } = req.params;
+
+    octokit.repos.listCommits({
+        owner: username,
+        repo: repo
+    }).then(response => {
+        res.send(response.data);
+    }).catch(error => {
+        console.error(error);
+        res.status(500).send('Error al obtener los commits');
+    });
+};
+
+export { getUserRepos, getRepoCommits }

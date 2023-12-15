@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import { validateEditUser } from "../models/edituser_model.js";
 
 //valida la entrada del usuario y maneja la creción de un nuevo usuario
-//también la encriptación con bcrypt
+
 const addUser = async (req, res) => {
     try {
         const result = validateUser(req.body)
@@ -58,7 +58,7 @@ const addUser = async (req, res) => {
 }
 
 //registra un usuario en la base de datos
-const insertUser = async ({ fullname, email, rut }) => {
+const insertUser = async ({ fullname, email, rut, birthYear}) => {
   try {
     const userCollection = db.collection("user");
     const saltRounds = 10;
@@ -71,6 +71,7 @@ const insertUser = async ({ fullname, email, rut }) => {
       fullname,
       email,
       rut,
+      birthYear,
       password: hashedPassword,
     };
 

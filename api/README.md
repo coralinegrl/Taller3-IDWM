@@ -30,6 +30,6 @@ Set up Firebase in your project:
 ```properties
 PORT=Your_Port_Number
 JWT_SECRET_KEY=Your_JWT_Secret_Key 
-STORAGE_URL=Your_Firebase_Storage_URL
+GITHUB_ACCESS_TOKEN=Your_Github_Token
 ```
 6. Run the app using the command `npm run dev`.

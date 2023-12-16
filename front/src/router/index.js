@@ -33,9 +33,10 @@ const routes = [
     component: RepositoriesView
   },
   {
-    path: '/commits',
-    name: 'commits',
-    component: CommitsView  
+    path: '/commits/:repoName',
+    name: 'CommitsView',
+    component: () => import('@/views/CommitsView.vue'),
+    props: true  
   }
 
 ]

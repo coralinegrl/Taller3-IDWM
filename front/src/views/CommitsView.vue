@@ -1,40 +1,106 @@
 <template>
-    <div>
-        <h1>Commits View</h1>
-        <ul>
-            <li v-for="commit in commits" :key="commit.id">
-                <h3>{{ commit.message }}</h3>
-                <p>Author: {{ commit.author }}</p>
-                <p>Date: {{ commit.date }}</p>
-            </li>
-        </ul>
-    </div>
-</template>
-
-<script>
-export default {
-    data() {
-        return {
-            commits: [
-                {
-                    id: 1,
-                    message: "Initial commit",
-                    author: "John Doe",
-                    date: "2022-01-01",
-                },
-                {
-                    id: 2,
-                    message: "Add feature X",
-                    author: "Jane Smith",
-                    date: "2022-01-02",
-                },
-                // Add more commits here...
-            ],
-        };
+    <ion-page>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Commits</ion-title>
+          <ion-buttons slot="end">
+            <ion-button @click="goToRepositories">
+              Repositorios
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+  
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-item v-for="commit in commits" :key="commit.sha" class="commit-item">
+            <ion-label>
+              <h2>{{ commit.commit.message }}</h2>
+              <p>{{ commit.author.login }} - {{ commit.commit.author.date | formatDate }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-page>
+  </template>
+  
+  <script>
+  import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonList, IonItem, IonLabel } from '@ionic/vue';
+  import { defineComponent, ref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+  import { Octokit } from '@octokit/rest';
+  
+  export default defineComponent({
+    name: 'CommitsView',
+    components: {
+        IonContent,
+        IonHeader,
+        IonPage,
+        IonTitle,
+        IonToolbar,
+        IonButton,
+        IonButtons,
+        IonList,
+        IonItem,
+        IonLabel,
+        
+      // ... tus otros componentes importados ...
     },
-};
-</script>
-
-<style scoped>
-/* Add your custom styles here */
-</style>
+    setup() {
+      const route = useRoute();
+      const router = useRouter();
+      const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+      const commits = ref([]);
+  
+      const getCommits = async (repoName) => {
+        try {
+          const response = await octokit.rest.repos.listCommits({
+            owner: 'Dizkm8', // Este debería ser el propietario del repositorio
+            repo: repoName,
+          });
+          commits.value = response.data.sort((a, b) => new Date(b.commit.author.date) - new Date(a.commit.author.date));
+        } catch (error) {
+          console.error('Error al obtener los commits:', error);
+        }
+      };
+  
+      // Llamar a getCommits cuando el componente se monta y cuando el parámetro de ruta cambia
+      watch(() => route.params.repoName, (newRepoName, oldRepoName) => {
+        if (newRepoName !== oldRepoName) {
+          getCommits(newRepoName);
+        }
+      }, { immediate: true });
+  
+      return {
+        commits,
+        getCommits,
+        goToRepositories() {
+          router.push('/repositories');
+        },
+      };
+    },
+    methods: {
+      // ... si tienes métodos adicionales ...
+    },
+  });
+  </script>
+  
+  <style scoped>
+  /* Reutiliza los estilos de RepositoriesView.vue aquí */
+  .commit-item {
+    margin: 0.5em;
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    transition: transform 0.1s ease;
+  }
+  
+  .commit-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  ion-toolbar {
+    --background: #ff7675;
+  }
+  </style>
+  

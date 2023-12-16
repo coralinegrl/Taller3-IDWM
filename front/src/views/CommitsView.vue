@@ -5,7 +5,7 @@
           <ion-title>Commits</ion-title>
           <ion-buttons slot="end">
             <ion-button @click="goToRepositories">
-              Repositorios
+              Volver
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -16,7 +16,7 @@
           <ion-item v-for="commit in commits" :key="commit.sha" class="commit-item">
             <ion-label>
               <h2>{{ commit.commit.message }}</h2>
-              <p>{{ commit.author.login }} - {{ commit.commit.author.date | formatDate }}</p>
+              <p>{{ commit.author.login }} - {{ commit.message | formatDate }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -29,6 +29,10 @@
   import { defineComponent, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { Octokit } from '@octokit/rest';
+  import { watch } from 'vue';
+
+
+
   
   export default defineComponent({
     name: 'CommitsView',

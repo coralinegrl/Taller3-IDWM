@@ -38,8 +38,7 @@ export default defineComponent({
         const updateProfile = async () => {
             try {
                 // Llama a tu API para actualizar el perfil aquí
-                // ...
-                const response = await axios.put('/api/user/profile', {
+                const response = await axios.put('http://localhost:3000/api/user/profile', {
                     fullname: editableUser.value.fullname,
                     email: editableUser.value.email,
                     birthYear: editableUser.value.birthYear

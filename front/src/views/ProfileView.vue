@@ -2,7 +2,12 @@
   <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Perfil de Usuario</ion-title>
+        <ion-title>Perfil</ion-title>
+        <ion-buttons slot="end">
+          <ion-button @click="goToRepositories">
+            Volver
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -18,6 +23,7 @@
       <ion-button expand="full" color="primary" @click="showEditModal = true">
         Editar Perfil
       </ion-button>
+      <profile-edit-modal v-if="showEditModal" @close-modal="showEditModal = false" />
 
       <div>
         <p>Contraseña: ***********</p>
@@ -28,23 +34,29 @@
         Editar Contraseña
       </ion-button>
 
+      <!-- PasswordUpdateModal -->
+      <password-update-modal v-if="showPasswordUpdateModal" @close-modal="showPasswordUpdateModal = false" />
+
       <!-- Botón para cerrar sesión -->
       <ion-button expand="full" color="danger" @click="logout">
         Cerrar Sesión
       </ion-button>
     </ion-content>
-    <profile-edit-modal v-if="showEditModal" @close-modal="showEditModal = false" />
+    
 
 
   </ion-page>
 </template>
   
 <script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/vue';
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons } from '@ionic/vue';
+import { defineComponent, ref, computed } from 'vue';
 import router from '../router'; // Importa el enrutador de Vue Router
 import { UserStore } from '@/stores/user_state';
 import ProfileEditModal from '@/components/ProfileEditModal.vue';
+import PasswordUpdateModal from '@/components/PasswordUpdateModal.vue';
+import { useRoute, useRouter } from 'vue-router';
+
 
 export default defineComponent({
   name: 'ProfileView',
@@ -56,6 +68,7 @@ export default defineComponent({
     IonToolbar,
     IonButton,
     ProfileEditModal,
+    PasswordUpdateModal,
   },
   setup() {
 
@@ -63,26 +76,29 @@ export default defineComponent({
     const user = computed(() => mainStore.user);
     const showEditModal = ref(false);
     console.log(user.value);
+    const showPasswordUpdateModal = ref(false);
+    const route = useRoute();
+    const router = useRouter();
 
-    const logout = () => {
+
+    const logout = async () => {
       mainStore.logout();
-      router.push('/login');
+      await router.push('/login');
     };
-
-
 
     const editPassword = () => {
-      // Abre el modal PasswordUpdateModal.vue
-      // Puedes implementar esta parte según la lógica de tu aplicación
+      showPasswordUpdateModal.value = true;
     };
-
-
 
     return {
       user,
       logout,
       editPassword,
       showEditModal,
+      showPasswordUpdateModal,
+      goToRepositories() {
+          router.push('/repositories');
+      },
     };
   },
 });

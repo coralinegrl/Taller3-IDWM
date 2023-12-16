@@ -18,24 +18,28 @@ export const UserStore = defineStore({
     },
     actions: {
         login(user, token) {
-            console.log('Iniciando sesión con el usuario:', userData);
+            console.log('Iniciando sesión con el usuario:', user);
             this.user = user;
             this.token = token;
             console.log('Estado del usuario después del inicio de sesión:', this.user);
             router.push('/repositories');
         },
-        setUser(userData) {
-            this.user = userData;
+        setUser(user) {
+            this.user = user;
         },
-        updateUserProfile(updatedUserData) {
-            this.user = { ...this.user, ...updatedUserData };
-        },          
+        updateUserProfile(updatedUser) {
+            console.log('Actualizando perfil del usuario:', updatedUser);
+            this.user = updatedUser;
+        }, 
+               
 
-        async logout() {
+        logout() {
+            console.log('Cerrando sesión del usuario');
             this.user = null;
             this.token = null;
             localStorage.removeItem('token');
-            await router.push('/login');
+            console.log('Usuario después de cerrar sesión', this.user);
+            router.push('/login');
         }
           
     },

@@ -5,9 +5,10 @@
         <ion-title>Repositories </ion-title>
         <!-- Agrega el botón en la parte superior derecha -->
         <ion-buttons slot="end">
-          <ion-button @click="goToProfile">
-            Perfil
+          <ion-button @click="goToProfile" class="profile-button">
+            <img src="../assets/perfil.png" alt="Perfil" />
           </ion-button>
+
 
         </ion-buttons>
       </ion-toolbar>
@@ -99,32 +100,47 @@ export default defineComponent({
 
   async mounted() {
     await this.getRepositories();
-    
+
   },
 });
 </script>
   
 <style scoped>
-.ion-toolbar {
-  --background: #ff7675; /* Cambia el color de fondo de la barra de herramientas */
-}
+ ion-toolbar {
+    --background: #ff7675;
+  }
 
 ion-content {
-  --background: #f5f5f5; /* Fondo claro para el contenido, si así lo deseas */
+  --background: #f5f5f5;
+  /* Fondo claro para el contenido, si así lo deseas */
 }
 
 .repository-item {
   margin: 0.5em;
-  border-radius: 15px; /* Bordes redondeados */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para el relieve */
-  background: #ffffff; /* Fondo blanco para cada recuadro */
-  transition: transform 0.1s ease; /* Animación para el clic */
+  border-radius: 15px;
+  /* Bordes redondeados */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  /* Sombra suave para el relieve */
+  background: #ffffff;
+  /* Fondo blanco para cada recuadro */
+  transition: transform 0.1s ease;
+  /* Animación para el clic */
 }
 
 .repository-item:hover {
-  transform: translateY(-2px); /* Efecto al pasar el mouse */
+  transform: translateY(-2px);
+  /* Efecto al pasar el mouse */
 }
 
-/* Si estás utilizando scoped styles y quieres estilizar un router-link, puedes necesitar una clase adicional o usar :deep() */
+.profile-button {
+  --background: transparent; /* Hace el fondo del botón transparente */
+  --padding: 0; /* Elimina el padding del botón para que la imagen llene el botón */
+  --border: none; /* Elimina el borde del botón */
+}
+
+.profile-button img {
+  height: 30px; /* o el tamaño que desees */
+  width: auto; /* mantiene la relación de aspecto de la imagen */
+}
+
 </style>
-  

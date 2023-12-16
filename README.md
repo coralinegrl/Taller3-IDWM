@@ -16,9 +16,9 @@ This project is an API built with Express and uses Firebase as its database.
 
 To run this project, you will need to follow these steps:
 
-1. You must use the branch called 'master'.
+1. You must use the branch called `master`.
 2. Clone the repository.
-3. Open a terminal, and type 'cd api'
+3. Open a terminal, and type `cd api`
 4. Install the dependencies using `npm install`.
 5. Set up Firebase in your project:
    - Go to [Firebase](https://firebase.google.com)
@@ -53,7 +53,7 @@ This project is an frontend built with Vue framework and Ionic.
 
 ## Setup
 
-1. Open a terminal, and type 'cd front'
+1. Open a terminal, and type `cd front`
 2. Install the dependencies using `npm install`.
 ```
 npm install

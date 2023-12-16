@@ -29,7 +29,7 @@ To run this project, you will need to follow these steps:
    - This will download a JSON file. Copy the contents of this file
    - Paste the copied contents into a new file in the `api/firebase/` directory of your project, where the `credentials.example.json` file is located
    - Rename this new file to `credentials.json`
-6. Set up your Firebase Storage and get the URL.
+6. Set up your Firebase and get the URL.
 7. Create a `.env` file in the root directory of your project and add the following environment variables (you can copy from the .env.example file):
 
 ```properties

@@ -55,8 +55,7 @@ export default defineComponent({
     setup() {
       const mainStore = UserStore();
       const email = ref('');
-      const password = ref('');
-  
+      const password = ref('');  
       
 
       const goBack = () => {

@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import RepositoriesView from '../views/RepositoriesView.vue'
-import CommitsView from '../views/CommitsView.vue'
+
 
 const routes = [
   {

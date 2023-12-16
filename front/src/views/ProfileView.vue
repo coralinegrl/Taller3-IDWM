@@ -59,7 +59,7 @@ export default defineComponent({
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/'); // Reemplaza '/api/user-data' con la URL correcta para obtener los datos del usuario
+        const response = await axios.get('http://localhost:3000/api/user/profile'); // Reemplaza '/api/user-data' con la URL correcta para obtener los datos del usuario
         user.value = response.data.user;
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);

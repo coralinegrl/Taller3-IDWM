@@ -4,6 +4,7 @@ import verifyToken from "../middleware/verifyToken.js";
 import { updateUserProfile } from "../controllers/user_controller.js";
 import { updateUserPassword } from '../controllers/user_controller.js';
 import { db } from '../firebase/firebase.js';
+// import { getUserProfile } from '../controllers/user_controller.js';
 
 
 const router = Router()
@@ -11,6 +12,7 @@ const router = Router()
 
 router.post('/', addUser) //register
 router.post('/login', authUser) //login
+// router.get('/profile', getUserProfile); //obtener perfil
 router.put('/profile', verifyToken, updateUserProfile); //editar perfil
 router.put('/update-password', verifyToken, updateUserPassword); //editar contraseña
 router.post('/logout', verifyToken, async (req, res) => {

@@ -110,7 +110,8 @@ const authUser = async (req, res) => {
               { expiresIn: '1h' }
           );
           console.log(token);
-          return res.status(200).send({ token });
+          delete user.password;
+          return res.status(200).send({ user, token });
       } else {
           return res.status(401).send({ message: "Credenciales inválidas" });
       }
@@ -119,6 +120,27 @@ const authUser = async (req, res) => {
       return res.status(500).send({ message: "Error interno del servidor" });
   }
 };
+
+// const getUserProfile = async (req, res) => {
+//   const userEmail = req.email; 
+
+//   try {
+//     const userQuerySnapshot = await db.collection("user").where("email", "==", userEmail).get();
+//     if (userQuerySnapshot.empty) {
+//         return res.status(404).json({ message: 'Usuario no encontrado.' });
+//     }
+
+//     const userDocRef = userQuerySnapshot.docs[0].ref;
+//     const userProfile = (await userDocRef.get()).data();
+//     delete userProfile.password;
+//     res.json({ user: userProfile });
+
+//   } catch (error) {
+//     console.log(error)
+//     res.status(500).json({ message: 'Error al obtener el perfil' });
+//   }
+// };
+
 
 //actualizar datos del perfil
 const updateUserProfile = async (req, res) => {

@@ -1,2 +1,4 @@
 node_modules
-.env
+/api/.env
+/front/.env
+/api/firebase/credentials.json

@@ -15,7 +15,8 @@ const verifyToken = (req, res, next) => {
             return res.status(401).send({ message: 'Token inválido.' });
         }
 
-        req.email = decoded.email;
+       
+        req.user = decoded;
         
         console.log("Token verificado correctamente");
         next();

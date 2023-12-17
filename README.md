@@ -35,7 +35,7 @@ To run this project, you will need to follow these steps:
 ```properties
 PORT=Your_Port_Number
 JWT_SECRET_KEY=Your_JWT_Secret_Key 
-GITHUB_ACCESS_TOKEN=Your_Github_Token
+VUE_APP_GITHUB_ACCESS_TOKEN=Your_Github_Token
 ```
 8. Run the app using the command `npm run dev`.
 

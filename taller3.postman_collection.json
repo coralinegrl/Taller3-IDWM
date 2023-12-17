@@ -154,7 +154,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZHJlYUB1Y24uY2wiLCJpYXQiOjE3MDIwOTA4NDksImV4cCI6MTcwMjA5NDQ0OX0.HI7OBS_0WKT-qW7FiANHB6THEMuQFNdfW6UAVqiJJIM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pY2hlbGxlQHVjbi5jbCIsImlhdCI6MTcwMjc3NjkyOCwiZXhwIjoxNzAyNzgwNTI4fQ.UgLP9G87jElXz8Lqwi3Vq4PT1ulNszQm8nASFP2JXG0",
 							"type": "string"
 						}
 					]
@@ -175,7 +175,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fullname\": \"Andrea Saldaña Cavour\",\n  \"email\": \"andrea@ucn.cl\",\n  \"birthYear\": 1997\n}",
+					"raw": "{\n    \"fullname\": \"Andrea asdasd\",\n    \"email\": \"michelle1@ucn.cl\",\n    \"birthYear\": 1999\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,7 +207,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZHJlYUB1Y24uY2wiLCJpYXQiOjE3MDIxMDEyODgsImV4cCI6MTcwMjEwNDg4OH0.HJ-tvOkbzzMZFmN4VqGQPSsM587VTtlCWjBmEPFm5lY",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pY2hlbGxlMUB1Y24uY2wiLCJpZCI6InUzMkRzemJkWDd0SHNROUlLeUpCIiwiaWF0IjoxNzAyNzg2MDg1LCJleHAiOjE3MDI3ODk2ODV9.9oKWEdF9-69FatvStrD6j7DY9AT8xj82_vqzPmLVcq8",
 							"type": "string"
 						}
 					]
@@ -216,7 +216,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"newPassword\": \"holaa1\",\r\n  \"confirmPassword\": \"chao\"\r\n}",
+					"raw": "{\r\n  \"newPassword\": \"alejandro1\",\r\n  \"confirmPassword\": \"alejandro1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -224,7 +224,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/user/update-password",
+					"raw": "http://localhost:3000/api/user/update-password/duhlcXLWVIXWPpGy91E7",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -233,7 +233,8 @@
 					"path": [
 						"api",
 						"user",
-						"update-password"
+						"update-password",
+						"duhlcXLWVIXWPpGy91E7"
 					]
 				}
 			},

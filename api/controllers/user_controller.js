@@ -30,6 +30,17 @@ const addUser = async (req, res) => {
         // }
         if(req.body.rut) {
             const rutValidate = validateRut(req.body.rut)
+            const rutExists = await db.collection("user").where("rut", "==", req.body.rut).get();
+            if (!rutExists.empty) {
+              const rutError = {
+                code: z.ZodIssueCode.custom,
+                path: ["rut"],
+                message: "El rut ya está registrado",
+              };
+              errorIssues.push(rutError);
+              hasErrors = true;
+            }
+
             if (!rutValidate) {
                 const rutError = {
                     code: z.ZodIssueCode.custom,
@@ -40,6 +51,19 @@ const addUser = async (req, res) => {
                 hasErrors = true
             }
         }
+        if (req.body.email) {
+          const emailExists = await db.collection("user").where("email", "==", req.body.email).get();
+          if (!emailExists.empty) {
+            const emailError = {
+              code: z.ZodIssueCode.custom,
+              path: ["email"],
+              message: "El correo electrónico ya está registrado",
+            };
+            errorIssues.push(emailError);
+            hasErrors = true;
+          }
+        }
+
         if (hasErrors) {
             res.status(400)
             res.send({ error: new z.ZodError(errorIssues) });
@@ -102,16 +126,17 @@ const authUser = async (req, res) => {
       }
       const userDoc = userQuery.docs[0];
       const user = userDoc.data();
+      const fullUser = { id: userDoc.id, ...user };
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (passwordMatch) {
           const token = jwt.sign(
-              { email: user.email },
+              { email: user.email, id: userDoc.id },
               process.env.JWT_SECRET,
               { expiresIn: '1h' }
           );
           console.log(token);
           delete user.password;
-          return res.status(200).send({ user, token });
+          return res.status(200).send({ user: fullUser, token });
       } else {
           return res.status(401).send({ message: "Credenciales inválidas" });
       }
@@ -142,9 +167,14 @@ const authUser = async (req, res) => {
 // };
 
 
-//actualizar datos del perfil
+/**
+ * Función para actualizar el perfil de un usuario
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const updateUserProfile = async (req, res) => {
-  const userEmail = req.email; 
+  const userId = req.user.id; 
 
   try {
     const { fullname, email, birthYear } = req.body;
@@ -158,22 +188,21 @@ const updateUserProfile = async (req, res) => {
     
 
     // Encuentra el documento del usuario por su correo electrónico
-    const userQuerySnapshot = await db.collection("user").where("email", "==", userEmail).get();
+    const userQuerySnapshot = db.collection('user').doc(userId)
     if (userQuerySnapshot.empty) {
         return res.status(404).json({ message: 'Usuario no encontrado.' });
     }
 
     // Obtiene el documento y actualiza la información
-    const userDocRef = userQuerySnapshot.docs[0].ref;
-    await userDocRef.update({ fullname, email: email || userEmail, birthYear });
+    await userQuerySnapshot.update({ fullname, email, birthYear });
     
-    const updatedUserQuerySnapshot = (await userDocRef.get()).data();
+    const updatedUserQuerySnapshot = (await userQuerySnapshot.get()).data();
     delete updatedUserQuerySnapshot.password;
     const user = {
-      id: userDocRef.id,
+      id: userQuerySnapshot.id,
       ...updatedUserQuerySnapshot,
     }
-
+    res.status(200);
     res.json({ user });
 
   } catch (error) {
@@ -185,7 +214,7 @@ const updateUserProfile = async (req, res) => {
 //actualizar contraseña 
 const saltRounds = 10;
 const updateUserPassword = async (req, res) => {
-  const userEmail = req.email;
+  const userId = req.user.id;
   const { newPassword, confirmPassword } = req.body;
 
   // Valida que la contraseña tenga al menos 5 caracteres y al menos 1 número
@@ -201,11 +230,10 @@ const updateUserPassword = async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-    const userQuerySnapshot = await db.collection("user").where("email", "==", userEmail).get();
+    const userQuerySnapshot = await db.collection("user").doc(userId);
 
     if (!userQuerySnapshot.empty) {
-      const userDocRef = userQuerySnapshot.docs[0].ref;
-      await userDocRef.update({ password: hashedPassword });
+      await userQuerySnapshot.update({ password: hashedPassword });
       res.json({ message: 'Contraseña actualizada correctamente' });
     } else {
       res.status(404).json({ message: 'Usuario no encontrado.' });

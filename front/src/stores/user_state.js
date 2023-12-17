@@ -15,6 +15,9 @@ export const UserStore = defineStore({
         getUser() {
             return this.user;
         },
+        getToken() {
+            return this.token;
+        },
     },
     actions: {
         login(user, token) {

@@ -16,7 +16,7 @@
           <ion-item v-for="commit in commits" :key="commit.sha" class="commit-item">
             <ion-label>
               <h2>{{ commit.commit.message }}</h2>
-              <p>{{ commit.author.login }} - {{ commit.message | formatDate }}</p>
+              <p>{{ commit.author.login }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -53,7 +53,9 @@
     setup() {
       const route = useRoute();
       const router = useRouter();
-      const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+      const tokenGithub =  process.env.VUE_APP_GITHUB_ACCESS_TOKEN
+      console.log(tokenGithub)
+      const octokit = new Octokit({ auth: tokenGithub });
       const commits = ref([]);
   
       const getCommits = async (repoName) => {

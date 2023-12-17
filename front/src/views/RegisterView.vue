@@ -43,59 +43,67 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButt
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import router from '../router'; // Importa el enrutador de Vue Router
-  
+
 export default defineComponent({
-    name: 'RegisterView',
-    components: {
-      IonContent,
-      IonHeader,
-      IonPage,
-      IonTitle,
-      IonToolbar,
-      IonInput,
-      IonButton,
-      IonItem,
-      IonLabel,
-    },
-    setup() {
-      const fullname = ref('');
-      const email = ref('');
-      const birthYear = ref(0);
-      const rut = ref('');
-  
-      const register = async () => {
-        try {
-          console.log(fullname.value, email.value, birthYear.value, rut.value)
-          const response = await axios.post('http://localhost:3000/api/user/', {
-            fullname: fullname.value,
-            email: email.value,
-            birthYear: Number(birthYear.value),
-            rut: rut.value,
-          });
-  
-          // Si el registro es exitoso, puedes mostrar un mensaje de éxito o redirigir al usuario a la página de inicio de sesión (LoginView)
-          console.log('Registro exitoso:', response.data);
-          
-          // Redirige al usuario a la página de inicio de sesión (LoginView) después del registro exitoso
-          router.push('/login');
-        } catch (error) {
-          console.error('Error en el registro:', error);
-          // Maneja el error de registro, muestra mensajes de error específicos para cada campo, etc.
-        }
-      };
-      const goBack = () => {
+  name: 'RegisterView',
+  components: {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonInput,
+    IonButton,
+    IonItem,
+    IonLabel,
+  },
+  setup() {
+    const fullname = ref('');
+    const email = ref('');
+    const birthYear = ref(0);
+    const rut = ref('');
+    const errors = ref('');
+
+    const register = async () => {
+      try {
+        console.log(fullname.value, email.value, birthYear.value, rut.value)
+        const response = await axios.post('http://localhost:3000/api/user/', {
+          fullname: fullname.value,
+          email: email.value,
+          birthYear: Number(birthYear.value),
+          rut: rut.value,
+        });
+
+        // Si el registro es exitoso, puedes mostrar un mensaje de éxito o redirigir al usuario a la página de inicio de sesión (LoginView)
+        console.log('Registro exitoso:', response.data);
+
+        // Redirige al usuario a la página de inicio de sesión (LoginView) después del registro exitoso
+        router.push('/login');
+      } catch (error) {
+        if (error.response && error.response.data.error) {
+          console.log('Error en el registro:', error.response.data.error.issues)
+          const apiErrors = error.response.data.error.issues;
+          errors.value = apiErrors.map(issue => issue.message || "Error desconocido").join('\n');
+          alert(errors.value)
+        };
+        console.error('Error en el registro:', error);
+        // Maneja el error de registro, muestra mensajes de error específicos para cada campo, etc.
+      }
+    };
+    const goBack = () => {
       router.back();
-      };
-  
-      return {
-        fullname,
-        email,
-        birthYear,
-        rut,
-        register,
-        goBack,
-      };
-    },
+    };
+
+    return {
+      fullname,
+      email,
+      birthYear,
+      rut,
+      register,
+      goBack,
+      errors,
+    };
+  },
 });
 </script>
   
@@ -115,44 +123,56 @@ export default defineComponent({
 
 ion-header {
   background: transparent;
-  --ion-color-primary: #000000; /* Asegúrate de definir el color de fondo deseado */
+  --ion-color-primary: #000000;
+  /* Asegúrate de definir el color de fondo deseado */
 }
 
 ion-title {
   text-align: center;
-  color: #5E2750; /* Color del texto del título */
+  color: #5E2750;
+  /* Color del texto del título */
 }
 
 ion-toolbar {
-  --background: #ffffff; /* Fondo del toolbar si es necesario */
+  --background: #ffffff;
+  /* Fondo del toolbar si es necesario */
 }
 
 ion-item {
-  --background: #ffffff; /* Fondo de los items */
+  --background: #ffffff;
+  /* Fondo de los items */
   --padding-start: 0;
   --inner-padding-end: 0;
-  --border-radius: 10px; /* Bordes redondeados para los items */
+  --border-radius: 10px;
+  /* Bordes redondeados para los items */
   --border-color: transparent;
   --box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15);
 }
 
 ion-label {
-  --color: #8a8a8f; /* Color de los labels */
+  --color: #8a8a8f;
+  /* Color de los labels */
 }
 
 ion-input {
-  --color: #000; /* Color del texto de los inputs */
-  --placeholder-color: #8a8a8f; /* Color del placeholder */
+  --color: #000;
+  /* Color del texto de los inputs */
+  --placeholder-color: #8a8a8f;
+  /* Color del placeholder */
   --placeholder-font-style: italic;
   --padding-start: 1em;
   --text-align: start;
-  --border-radius: 10px; /* Bordes redondeados para los inputs */
+  --border-radius: 10px;
+  /* Bordes redondeados para los inputs */
 }
 
 ion-button {
-  --background: #ff7675; /* Color de fondo del botón */
-  --border-radius: 10px; /* Bordes redondeados para el botón */
-  --color: #fff; /* Color del texto del botón */
+  --background: #ff7675;
+  /* Color de fondo del botón */
+  --border-radius: 10px;
+  /* Bordes redondeados para el botón */
+  --color: #fff;
+  /* Color del texto del botón */
 }
 
 .login-link {
@@ -162,8 +182,8 @@ ion-button {
 }
 
 .login-link a {
-  color: #ff7675; /* Color del enlace */
+  color: #ff7675;
+  /* Color del enlace */
   text-decoration: none;
-}
-</style>
+}</style>
   

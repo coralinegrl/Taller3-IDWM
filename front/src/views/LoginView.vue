@@ -11,12 +11,12 @@
         <div class="login-container">
           <ion-item lines="full" class="ion-margin-bottom">
             <ion-label position="floating">Correo Electrónico</ion-label>
-            <ion-input v-model="email" type="email" required placeholder="Ingresa tu email"></ion-input>
+            <ion-input v-model="email" type="text" placeholder="Ingresa tu email"></ion-input>
           </ion-item>
 
           <ion-item lines="full" class="ion-margin-bottom">
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input v-model="password" type="password" required placeholder="Ingresa tu contraseña"></ion-input>
+            <ion-input v-model="password" type="password"  placeholder="Ingresa tu contraseña"></ion-input>
           </ion-item>
 
           <ion-button expand="block" type="submit" class="ion-margin-top">Iniciar sesión</ion-button>
@@ -39,59 +39,66 @@ import { UserStore } from '@/stores/user_state'; // Importa el almacenamiento lo
 
 
 export default defineComponent({
-    name: 'LoginView',
-    components: {
-      IonContent,
-      IonHeader,
-      IonPage,
-      IonTitle,
-      IonToolbar,
-      IonInput,
-      IonButton,
-      IonItem,
-      IonLabel,
-    
-    },
-    setup() {
-      const mainStore = UserStore();
-      const email = ref('');
-      const password = ref('');  
-      
+  name: 'LoginView',
+  components: {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonInput,
+    IonButton,
+    IonItem,
+    IonLabel,
 
-      const goBack = () => {
+  },
+  setup() {
+    const mainStore = UserStore();
+    const email = ref('');
+    const password = ref('');
+    const errors = ref('');
+
+
+    const goBack = () => {
       router.back();
-      };
-  
-      return {
-        email,
-        password,
-        goBack,
-        mainStore,
-      };
+    };
+
+    return {
+      email,
+      password,
+      goBack,
+      mainStore,
+      errors,
+    };
+  },
+  methods: {
+    // Función para iniciar sesión
+    async login() {
+      try {
+        const response = await axios.post('http://localhost:3000/api/user/login', {
+          email: this.email,
+          password: this.password,
+        });
+
+        // Si la autenticación es exitosa, puedes guardar el token en el almacenamiento local o en una cookie
+        // También puedes redirigir al usuario a la página deseada (RepositoriesView en este caso)
+        const token = response.data.token;
+        const user = response.data.user;
+        console.log('Token:', token);
+        console.log('Usuario:', response.data.user);
+        this.mainStore.login(user, token);
+
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        console.log(error.response.data.message)
+        if (error.response && error.response.data.message) {
+          this.errors = error.response.data.message;
+          alert(this.errors)
+        };
+        // Maneja el error, muestra un mensaje al usuario, etc.
+      }
     },
-    methods: {
-      // Función para iniciar sesión
-      async login() {
-        try {
-          const response = await axios.post('http://localhost:3000/api/user/login', {
-            email: this.email,
-            password: this.password,
-          });
-  
-          // Si la autenticación es exitosa, puedes guardar el token en el almacenamiento local o en una cookie
-          // También puedes redirigir al usuario a la página deseada (RepositoriesView en este caso)
-          const token = response.data.token;
-          const user = response.data.user;
-          console.log('Token:', token);
-          console.log('Usuario:', response.data.user);
-          this.mainStore.login(user, token);
-  
-        } catch (error) {
-          console.error('Error al iniciar sesión:', error);
-          // Maneja el error, muestra un mensaje al usuario, etc.
-        }
-      },
-    },
+  },
 });
 
 

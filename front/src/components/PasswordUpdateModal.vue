@@ -19,6 +19,7 @@
   
 <script>
 import { defineComponent, ref } from 'vue';
+import { UserStore } from '@/stores/user_state';
 import axios from 'axios';
 
 export default defineComponent({
@@ -27,26 +28,31 @@ export default defineComponent({
     setup(props, { emit }) {
         const newPassword = ref('');
         const confirmPassword = ref('');
+        const mainStore = UserStore();
+        const editableUser = ref({ ...mainStore.getUser });
 
         const updatePassword = async () => {
             try {
-                if (newPassword.value !== confirmPassword.value) {
-                    // Manejar error: Las contraseñas no coinciden
-                    console.error('Las contraseñas no coinciden.');
-                    return;
-                }
+                
                 // Envía la nueva contraseña al backend
-                await axios.put('http://localhost:3000/api/user/update-password', {
+                await axios.put(`http://localhost:3000/api/user/update-password/${editableUser.value.id}`, {
                     newPassword: newPassword.value,
                     confirmPassword: confirmPassword.value
                 }, {
                     headers: {
                         // Asegúrate de incluir el token de autenticación aquí
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${mainStore.getToken}`
+                    }
+                }).then((response) => {
+                    
+                    if (response.status === 200) {
+                        // Cierra el modal
+                        closeModal();
+                        mainStore.logout();
                     }
                 });
                 // Cierra el modal y posiblemente muestra un mensaje de éxito
-                closeModal();
+                
             } catch (error) {
                 // Manejar errores de la respuesta del servidor o de la red
                 console.error('Error al actualizar la contraseña:', error);

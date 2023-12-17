@@ -38,11 +38,19 @@ export default defineComponent({
         const updateProfile = async () => {
             try {
                 // Llama a tu API para actualizar el perfil aquí
-                const response = await axios.put('http://localhost:3000/api/user/profile', {
+                console.log('editableUser', editableUser);
+                console.log('editableUser.value', editableUser.value.id);
+                const response = await axios.put(`http://localhost:3000/api/user/${editableUser.value.id}`, {
                     fullname: editableUser.value.fullname,
                     email: editableUser.value.email,
                     birthYear: editableUser.value.birthYear
+
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${mainStore.getToken}` // Incluye el token de autenticación en la cabecera
+                    }   
                 });
+
                 mainStore.setUser(response.data.user); // Actualiza la información del usuario en la store
                 closeModal(); // Cierra el modal
             } catch (error) {

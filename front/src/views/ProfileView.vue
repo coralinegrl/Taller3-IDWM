@@ -125,7 +125,7 @@ export default defineComponent({
 }
 
 .white-title {
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .white-button {

@@ -4,7 +4,7 @@
     <ion-header>
       <!-- Barra de herramientas con título -->
       <ion-toolbar>
-        <ion-title>MobileHub</ion-title>
+        <ion-title class="up-title">MobileHub</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -75,42 +75,53 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content-container {
-  max-width: 380px;
-  margin: auto;
-  padding: 1em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem; /* Usa 'rem' para que el espaciado sea relativo al tamaño de fuente base */
+  }
+
+  .logo-container {
+    margin: 1em 0; /* Menos margen en pantallas pequeñas */
+  }
+
+  .logo {
+    max-width: 100%; /* Para que la imagen nunca sea más ancha que su contenedor */
+    margin-top: 100px; /* Menor margen superior */
+  }
+
+  .primary-button {
+  background-color: #ff7675; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin bordes */
+  border-radius: 50px; /* Bordes redondeados */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 1rem; /* Tamaño del texto */
+  margin-bottom: 10px; /* Margen debajo del botón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+  cursor: pointer; /* Estilo del cursor como un puntero */
+  }
+
+  .title {
+  font-size: 2.5em; 
+  font-weight: bold; 
+  color: #000000; 
+  margin-bottom: 1px;
+  margin-top: 10px;
+  }
+
 }
 
-.logo-container {
-  text-align: center;
-  margin: 2em 0;
-}
 
-.logo {
-  max-width: 160%; 
-  height: auto; 
-  margin-top: 150px;
-}
 
-.auth-button {
-  --background: #ec8585; 
-  --border-radius: 10px; 
-  --color: #fff; 
-  --padding-top: 1em; 
-  --padding-bottom: 1em; 
-  font-size: 1.2em; 
-  margin-top: 1em;
-  width: 100%; 
-}
 
 .auth-button.secondary {
-  --background: #bd8f8f; 
+  --background: transparent; 
+  -webkit-text-fill-color: #d08181;
 }
 
-
+.up-title {
+  color: #ffffff;
+}
 
 ion-title {
   color: #000000;
@@ -126,12 +137,10 @@ ion-content {
   --background: #ffffff; 
 }
 
-.title {
-  font-size: 2.5em; 
-  font-weight: bold; 
-  color: #000000; 
-  margin-bottom: 2px;
+ion-toolbar {
+  --background:#ff7675; 
 }
+
 
 </style>
   

@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import "dotenv/config"
 import { router as UserRoute } from './routes/user_routes.js'
-import { router as GithubRoutes } from './routes/github_routes.js'
 import verifyToken from './middleware/verifyToken.js'
 
 
@@ -14,7 +13,6 @@ app.use(cors())
 app.use(express.json())
 app.use("/api/user", UserRoute )
 app.use("/api/user", verifyToken)
-app.use('/github', GithubRoutes);
 
 
 

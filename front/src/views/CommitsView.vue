@@ -1,11 +1,11 @@
 <template>
     <ion-page>
       <ion-header>
-        <ion-toolbar>
-          <ion-title>Commits</ion-title>
+        <ion-toolbar class="custom-toolbar">
+          <ion-title class="white-title">Commits</ion-title>
           <ion-buttons slot="end">
-            <ion-button @click="goToRepositories">
-              Volver
+            <ion-button class="white-button" @click="goToRepositories">
+              ATRÁS
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -22,20 +22,28 @@
         </ion-list>
       </ion-content>
     </ion-page>
-  </template>
+</template>
   
-  <script>
-  import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonList, IonItem, IonLabel } from '@ionic/vue';
-  import { defineComponent, ref } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { Octokit } from '@octokit/rest';
-  import { watch } from 'vue';
+<script>
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonList, IonItem, IonLabel } from '@ionic/vue';
+import { defineComponent, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { Octokit } from '@octokit/rest';
+import { watch } from 'vue';
 
 
 
-  
-  export default defineComponent({
+/**
+ * Componente Vue para visualizar los commits de un repositorio específico en GitHub.
+ * Utiliza la API de GitHub para recuperar la información de los commits.
+ *
+ * @component
+ */  
+export default defineComponent({
     name: 'CommitsView',
+    /**
+     * Registra los componentes Ionic utilizados.
+     */
     components: {
         IonContent,
         IonHeader,
@@ -47,21 +55,28 @@
         IonList,
         IonItem,
         IonLabel,
-        
-      // ... tus otros componentes importados ...
     },
     setup() {
       const route = useRoute();
       const router = useRouter();
+      // Obtiene el token de GitHub desde las variables de entorno.
       const tokenGithub =  process.env.VUE_APP_GITHUB_ACCESS_TOKEN
       console.log(tokenGithub)
+      // Instancia de Octokit para las operaciones de la API de GitHub.
       const octokit = new Octokit({ auth: tokenGithub });
+      // Ref para almacenar los commits del repositorio seleccionado.
       const commits = ref([]);
-  
+      
+      /**
+         * Obtiene los commits de un repositorio específico.
+         * Ordena los commits por fecha en orden descendente.
+         *
+         * @param {string} repoName - El nombre del repositorio para el cual obtener los commits.
+      */
       const getCommits = async (repoName) => {
         try {
           const response = await octokit.rest.repos.listCommits({
-            owner: 'Dizkm8', // Este debería ser el propietario del repositorio
+            owner: 'Dizkm8',
             repo: repoName,
           });
           commits.value = response.data.sort((a, b) => new Date(b.commit.author.date) - new Date(a.commit.author.date));
@@ -70,43 +85,58 @@
         }
       };
   
-      // Llamar a getCommits cuando el componente se monta y cuando el parámetro de ruta cambia
+      // Observa cambios en el parámetro de ruta 'repoName' y llama a getCommits si cambia.
       watch(() => route.params.repoName, (newRepoName, oldRepoName) => {
         if (newRepoName !== oldRepoName) {
           getCommits(newRepoName);
         }
       }, { immediate: true });
-  
+      
+
+      // Proporciona las propiedades y métodos al contexto del componente.
       return {
         commits,
         getCommits,
+        /**
+          * Navega de vuelta a la vista de repositorios.
+        */
         goToRepositories() {
           router.push('/repositories');
         },
       };
     },
     methods: {
-      // ... si tienes métodos adicionales ...
+      
     },
-  });
-  </script>
+});
+</script>
   
-  <style scoped>
-  /* Reutiliza los estilos de RepositoriesView.vue aquí */
-  .commit-item {
+<style scoped>
+.commit-item {
     margin: 0.5em;
     border-radius: 15px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     background: #ffffff;
     transition: transform 0.1s ease;
-  }
-  
-  .commit-item:hover {
+}
+
+.commit-item:hover {
     transform: translateY(-2px);
-  }
-  
-  ion-toolbar {
+}
+
+ion-toolbar {
     --background: #ff7675;
-  }
-  </style>
-  
+}
+
+.white-title {
+  color: white;
+}
+
+.white-button {
+  --color: white;
+}
+
+.custom-toolbar {
+  --background: #ff7675;
+}
+</style>

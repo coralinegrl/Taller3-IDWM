@@ -9,6 +9,12 @@
     </ion-header>
 
     <ion-content>
+      <div class="logo-container">
+        <img src="../assets/mobilehub.png" alt="Logo" class="logo" />
+      </div>
+      <div class="title">
+        <p>MobileHub</p>
+      </div>
       <!-- Formulario de inicio de sesión -->
       <form @submit.prevent="login" class="login-form">
         <!-- Contenedor del formulario -->
@@ -18,11 +24,11 @@
             <ion-label position="floating">Correo Electrónico</ion-label>
             <ion-input v-model="email" type="text" placeholder="Ingresa tu email"></ion-input>
           </ion-item>
-          
+
           <!-- Campo de contraseña -->
           <ion-item lines="full" class="ion-margin-bottom">
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input v-model="password" type="password"  placeholder="Ingresa tu contraseña"></ion-input>
+            <ion-input v-model="password" type="password" placeholder="Ingresa tu contraseña"></ion-input>
           </ion-item>
           <!-- Botón para iniciar sesión -->
           <ion-button expand="block" type="submit" class="ion-margin-top">Iniciar sesión</ion-button>
@@ -116,7 +122,7 @@ export default defineComponent({
           this.errors = error.response.data.message;
           alert(this.errors)
         };
-        
+
       }
     },
   },
@@ -124,9 +130,14 @@ export default defineComponent({
 </script>
   
 <style scoped>
+.logo-container {
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 60px;
+}
 .login-form {
   max-width: 380px;
-  margin-top: 210px;
+  margin-top: 60px;
   margin-left: 30px;
   padding: 1em;
 }
@@ -146,6 +157,14 @@ ion-header {
 ion-title {
   text-align: center;
   color: #5E2750;
+}
+
+.title {
+  font-size: 2.5em; 
+  font-weight: bold; 
+  color: #000000; 
+  margin-bottom: 1px;
+  margin-top: 10px;
 }
 
 ion-toolbar {

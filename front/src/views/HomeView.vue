@@ -3,17 +3,22 @@
   <ion-page>
     <ion-header>
       <!-- Barra de herramientas con título -->
-      <ion-toolbar color="primary">
+      <ion-toolbar>
         <ion-title>MobileHub</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content class="ion-padding">
+      
       <!-- Contenedor principal del contenido -->
       <div class="content-container">
+        
         <!-- Contenedor del logo -->
-        <div class="logo-container">
-          <img src="../assets/mobilehub.png" alt="Logo" class="logo" />
+        <div class="logo-container">          
+          <img src="../assets/mobilehub.png" alt="Logo" class="logo" />          
+        </div>
+        <div class="title">
+          <p>MobileHub</p>          
         </div>
         
         <!-- Botones para iniciar sesión y registrarse -->
@@ -85,46 +90,49 @@ export default defineComponent({
 }
 
 .logo {
-  max-width: 160%; /* O un tamaño fijo si lo prefieres */
-  height: auto; /* Mantén la relación de aspecto */
+  max-width: 160%; 
+  height: auto; 
   margin-top: 150px;
 }
 
 .auth-button {
-  --background: #ec8585; /* Color de fondo del botón */
-  --border-radius: 10px; /* Bordes redondeados para el botón */
-  --color: #fff; /* Color del texto del botón */
-  --padding-top: 1em; /* Aumenta el padding para hacer el botón más alto */
-  --padding-bottom: 1em; /* Aumenta el padding para hacer el botón más alto */
-  font-size: 1.2em; /* Tamaño de fuente más grande */
+  --background: #ec8585; 
+  --border-radius: 10px; 
+  --color: #fff; 
+  --padding-top: 1em; 
+  --padding-bottom: 1em; 
+  font-size: 1.2em; 
   margin-top: 1em;
-  width: 100%; /* Asegura que el botón se expanda al ancho máximo del contenedor */
+  width: 100%; 
 }
 
 .auth-button.secondary {
-  --background: #e7c8c8; /* Color de fondo del botón secundario */
+  --background: #bd8f8f; 
 }
 
-ion-toolbar {
-  --background: #d08181; /* Fondo del toolbar si es necesario */
-  --color: #000000; /* Color del texto del título */
-}
+
 
 ion-title {
   color: #000000;
 }
 
 ion-header {
-  --ion-color-primary: #fff; /* Cambia al color que prefieras para el fondo del encabezado */
-  --ion-toolbar-background: #fff; /* Cambia al color que prefieras para el fondo de la barra de herramientas */
-  --ion-toolbar-color: #5E2750; /* Cambia al color que prefieras para el color del texto de la barra de herramientas */
+  --ion-color-primary: #fff; 
+  --ion-toolbar-background: #d08181; 
+  --ion-toolbar-color: #000000; 
 }
 
 ion-content {
-  --background: #ffffff; /* Cambia al color que prefieras para el fondo del contenido */
+  --background: #ffffff; 
 }
 
-/* Ajustes adicionales para el tamaño y color de fondo según sea necesario */
+.title {
+  font-size: 2.5em; 
+  font-weight: bold; 
+  color: #000000; 
+  margin-bottom: 2px;
+}
+
 </style>
   
 

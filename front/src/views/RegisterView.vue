@@ -2,13 +2,19 @@
   <!-- Página de registro de cuenta -->
   <ion-page>
     <ion-header>
-       <!-- Barra de herramientas con título de registro -->
+      <!-- Barra de herramientas con título de registro -->
       <ion-toolbar>
         <ion-title>Crear cuenta</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content>
+      <div class="logo-container">
+        <img src="../assets/mobilehub.png" alt="Logo" class="logo" />
+      </div>
+      <div class="title">
+        <p>MobileHub</p>
+      </div>
       <!-- Formulario de registro -->
       <form @submit.prevent="register" class="register-form">
         <!-- Contenedor del formulario -->
@@ -128,6 +134,16 @@ export default defineComponent({
 </script>
   
 <style scoped>
+.logo-container {
+  text-align: center;
+  margin-top: 50px;
+}
+.title {
+  font-size: 2.5em; 
+  font-weight: bold; 
+  color: #000000; 
+  margin-bottom: 2px;
+}
 .register-form {
   max-width: 380px;
   margin: auto;
@@ -205,5 +221,6 @@ ion-button {
   color: #ff7675;
   /* Color del enlace */
   text-decoration: none;
-}</style>
+}
+</style>
   

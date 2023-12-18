@@ -1,5 +1,3 @@
-
-
 import { Router } from "express";
 import { addUser, authUser } from "../controllers/user_controller.js";
 import verifyToken from "../middleware/verifyToken.js";
@@ -7,7 +5,7 @@ import { updateUserProfile } from "../controllers/user_controller.js";
 import { updateUserPassword } from '../controllers/user_controller.js';
 import { db } from '../firebase/firebase.js';
 import { verifyUserId } from "../middleware/verifyUserId.js";
-// import { getUserProfile } from '../controllers/user_controller.js';
+
 
 
 const router = Router()

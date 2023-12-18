@@ -1,17 +1,22 @@
 <template>
+  <!-- Página principal de MobileHub -->
   <ion-page>
     <ion-header>
+      <!-- Barra de herramientas con título -->
       <ion-toolbar color="primary">
         <ion-title>MobileHub</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content class="ion-padding">
+      <!-- Contenedor principal del contenido -->
       <div class="content-container">
+        <!-- Contenedor del logo -->
         <div class="logo-container">
           <img src="../assets/mobilehub.png" alt="Logo" class="logo" />
         </div>
 
+        <!-- Botones para iniciar sesión y registrarse -->
         <ion-button expand="full" class="auth-button" @click="goToLogin">
           Iniciar sesión
         </ion-button>
@@ -28,8 +33,18 @@ import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from 
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
+/**
+ * Componente Vue para la vista de inicio de MobileHub.
+ * Proporciona opciones para iniciar sesión o registrarse.
+ *
+ * @component
+ */
 export default defineComponent({
   name: 'HomeView',
+
+  /**
+   * Registra los componentes Ionic utilizados.
+   */
   components: {
     IonButton,
     IonContent,
@@ -38,16 +53,25 @@ export default defineComponent({
     IonTitle,
     IonToolbar,
   },
+
   methods: {
+    /**
+     * Navega a la vista de inicio de sesión.
+     */
     goToLogin() {
       this.$router.push('/login');
     },
+
+    /**
+     * Navega a la vista de registro.
+     */
     goToRegister() {
       this.$router.push('/register');
     },
   },
 });
 </script>
+
 
 <style scoped>
 .content-container {

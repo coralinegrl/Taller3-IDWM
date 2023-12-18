@@ -15,7 +15,7 @@
         <div class="logo-container">
           <img src="../assets/mobilehub.png" alt="Logo" class="logo" />
         </div>
-
+        
         <!-- Botones para iniciar sesión y registrarse -->
         <ion-button expand="full" class="auth-button" @click="goToLogin">
           Iniciar sesión
@@ -41,7 +41,6 @@ import { useRouter } from 'vue-router';
  */
 export default defineComponent({
   name: 'HomeView',
-
   /**
    * Registra los componentes Ionic utilizados.
    */
@@ -53,7 +52,6 @@ export default defineComponent({
     IonTitle,
     IonToolbar,
   },
-
   methods: {
     /**
      * Navega a la vista de inicio de sesión.
@@ -61,7 +59,6 @@ export default defineComponent({
     goToLogin() {
       this.$router.push('/login');
     },
-
     /**
      * Navega a la vista de registro.
      */
@@ -71,7 +68,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .content-container {

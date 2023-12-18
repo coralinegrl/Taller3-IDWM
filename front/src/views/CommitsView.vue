@@ -92,14 +92,10 @@ export default defineComponent({
         }
       }, { immediate: true });
       
-
-      // Proporciona las propiedades y métodos al contexto del componente.
+      
       return {
         commits,
         getCommits,
-        /**
-          * Navega de vuelta a la vista de repositorios.
-        */
         goToRepositories() {
           router.push('/repositories');
         },

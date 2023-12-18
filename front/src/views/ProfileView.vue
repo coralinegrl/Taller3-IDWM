@@ -14,26 +14,29 @@
     </ion-header>
 
     <ion-content class="ion-padding">
-      <!-- Sección para mostrar información del usuario -->
+      <!-- Muestra los datos del usuario -->
       <div>
         <p v-if="user">Nombre Completo: {{ user.fullname }}</p>
         <p v-if="user">Correo Electrónico: {{ user.email }}</p>
         <p v-if="user">Año de Nacimiento: {{ user.birthYear }}</p>
       </div>
 
-      <!-- Botón para activar la edición del perfil -->
+      <!-- Botón para editar el perfil -->
       <ion-button expand="full" class="custom-button" @click="showEditModal = true">
         Editar Perfil
       </ion-button>
       <profile-edit-modal v-if="showEditModal" @close-modal="showEditModal = false" />
 
-      <!-- Sección para cambiar la contraseña -->
       <div>
         <p>Contraseña: ***********</p>
       </div>
+
+      <!-- Botón para editar la contraseña -->
       <ion-button expand="full" class="custom-button" @click="editPassword">
         Editar Contraseña
       </ion-button>
+
+      <!-- PasswordUpdateModal -->
       <password-update-modal v-if="showPasswordUpdateModal" @close-modal="showPasswordUpdateModal = false" />
 
       <!-- Botón para cerrar sesión -->
@@ -41,16 +44,19 @@
         Cerrar Sesión
       </ion-button>
     </ion-content>
+    
+
+
   </ion-page>
 </template>
-
+  
 <script>
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons } from '@ionic/vue';
 import { defineComponent, ref, computed } from 'vue';
 import router from '../router'; // Importa el enrutador de Vue Router
-import { UserStore } from '@/stores/user_state'; // Importa el almacenamiento de estado del usuario
-import ProfileEditModal from '@/components/ProfileEditModal.vue'; // Modal para editar perfil
-import PasswordUpdateModal from '@/components/PasswordUpdateModal.vue'; // Modal para actualizar contraseña
+import { UserStore } from '@/stores/user_state';
+import ProfileEditModal from '@/components/ProfileEditModal.vue';
+import PasswordUpdateModal from '@/components/PasswordUpdateModal.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
@@ -61,7 +67,6 @@ import { useRoute, useRouter } from 'vue-router';
  */
 export default defineComponent({
   name: 'ProfileView',
-
   /**
    * Registra los componentes Ionic y componentes personalizados utilizados.
    */
@@ -75,12 +80,15 @@ export default defineComponent({
     ProfileEditModal,
     PasswordUpdateModal,
   },
-
   setup() {
+
     const mainStore = UserStore();
     const user = computed(() => mainStore.user);
     const showEditModal = ref(false);
+    console.log(user.value);
     const showPasswordUpdateModal = ref(false);
+    const route = useRoute();
+    const router = useRouter();
 
     /**
      * Cierra la sesión del usuario y redirige a la página de inicio de sesión.
@@ -110,7 +118,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .custom-toolbar {

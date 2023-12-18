@@ -18,30 +18,30 @@
             <ion-label position="floating">Correo Electrónico</ion-label>
             <ion-input v-model="email" type="text" placeholder="Ingresa tu email"></ion-input>
           </ion-item>
-
+          
           <!-- Campo de contraseña -->
           <ion-item lines="full" class="ion-margin-bottom">
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input v-model="password" type="password" placeholder="Ingresa tu contraseña"></ion-input>
+            <ion-input v-model="password" type="password"  placeholder="Ingresa tu contraseña"></ion-input>
           </ion-item>
-
           <!-- Botón para iniciar sesión -->
           <ion-button expand="block" type="submit" class="ion-margin-top">Iniciar sesión</ion-button>
         </div>
-
         <!-- Enlace para registrarse -->
         <p class="register-link">¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
       </form>
     </ion-content>
   </ion-page>
 </template>
-
+  
 <script>
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonItem, IonLabel } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
 import router from '../router'; // Importa el enrutador de Vue Router
 import { UserStore } from '@/stores/user_state'; // Importa el almacenamiento local de usuario
+
+
 
 /**
  * Componente Vue para la vista de inicio de sesión.
@@ -51,7 +51,6 @@ import { UserStore } from '@/stores/user_state'; // Importa el almacenamiento lo
  */
 export default defineComponent({
   name: 'LoginView',
-
   /**
    * Registra los componentes Ionic utilizados.
    */
@@ -65,8 +64,8 @@ export default defineComponent({
     IonButton,
     IonItem,
     IonLabel,
-  },
 
+  },
   setup() {
     const mainStore = UserStore();
     const email = ref('');
@@ -88,7 +87,6 @@ export default defineComponent({
       errors,
     };
   },
-
   methods: {
     /**
      * Realiza una solicitud de inicio de sesión al servidor y maneja la respuesta.
@@ -107,22 +105,23 @@ export default defineComponent({
         const token = response.data.token;
         const user = response.data.user;
         console.log('Token:', token);
-        console.log('Usuario:', user);
+        console.log('Usuario:', response.data.user);
         this.mainStore.login(user, token);
 
       } catch (error) {
         // Manejo de errores durante la solicitud
         console.error('Error al iniciar sesión:', error);
+        console.log(error.response.data.message)
         if (error.response && error.response.data.message) {
           this.errors = error.response.data.message;
-          alert(this.errors);
+          alert(this.errors)
         };
+        
       }
     },
   },
 });
 </script>
-
   
 <style scoped>
 .login-form {

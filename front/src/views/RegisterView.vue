@@ -160,55 +160,55 @@ export default defineComponent({
 ion-header {
   background: transparent;
   --ion-color-primary: #000000;
-  /* Asegúrate de definir el color de fondo deseado */
+  
 }
 
 ion-title {
   text-align: center;
   color: #5E2750;
-  /* Color del texto del título */
+  
 }
 
 ion-toolbar {
   --background: #ffffff;
-  /* Fondo del toolbar si es necesario */
+  
 }
 
 ion-item {
   --background: #ffffff;
-  /* Fondo de los items */
+  
   --padding-start: 0;
   --inner-padding-end: 0;
   --border-radius: 10px;
-  /* Bordes redondeados para los items */
+  
   --border-color: transparent;
   --box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15);
 }
 
 ion-label {
   --color: #8a8a8f;
-  /* Color de los labels */
+  
 }
 
 ion-input {
   --color: #000;
-  /* Color del texto de los inputs */
+  
   --placeholder-color: #8a8a8f;
-  /* Color del placeholder */
+  
   --placeholder-font-style: italic;
   --padding-start: 1em;
   --text-align: start;
   --border-radius: 10px;
-  /* Bordes redondeados para los inputs */
+  
 }
 
 ion-button {
   --background: #ff7675;
-  /* Color de fondo del botón */
+  
   --border-radius: 10px;
-  /* Bordes redondeados para el botón */
+  
   --color: #fff;
-  /* Color del texto del botón */
+  
 }
 
 .login-link {
@@ -219,7 +219,7 @@ ion-button {
 
 .login-link a {
   color: #ff7675;
-  /* Color del enlace */
+  
   text-decoration: none;
 }
 </style>

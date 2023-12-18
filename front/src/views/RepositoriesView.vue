@@ -147,35 +147,35 @@ export default defineComponent({
 
 ion-content {
   --background: #f5f5f5;
-  /* Fondo claro para el contenido, si así lo deseas */
+  
 }
 
 .repository-item {
   margin: 0.5em;
   border-radius: 15px;
-  /* Bordes redondeados */
+  
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  /* Sombra suave para el relieve */
+  
   background: #ffffff;
-  /* Fondo blanco para cada recuadro */
+  
   transition: transform 0.1s ease;
-  /* Animación para el clic */
+  
 }
 
 .repository-item:hover {
   transform: translateY(-2px);
-  /* Efecto al pasar el mouse */
+  
 }
 
 .profile-button {
-  --background: transparent; /* Hace el fondo del botón transparente */
-  --padding: 0; /* Elimina el padding del botón para que la imagen llene el botón */
-  --border: none; /* Elimina el borde del botón */
+  --background: transparent; 
+  --padding: 0; 
+  --border: none; 
 }
 
 .profile-button img {
-  height: 30px; /* o el tamaño que desees */
-  width: auto; /* mantiene la relación de aspecto de la imagen */
+  height: 30px; 
+  width: auto; 
 }
 
 .custom-toolbar {
